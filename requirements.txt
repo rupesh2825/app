@@ -1,4 +1,5 @@
 flask
-face_recognition
 numpy
 pillow
+pyzbar
+opencv-contrib-python

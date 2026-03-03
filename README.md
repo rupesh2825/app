@@ -24,6 +24,33 @@ python app.py
 
 The API will be available on `http://localhost:5000`.
 
+### Endpoints
+
+- `POST /api/match_face` – accepts JSON with an `image` field (face as base64); returns registration ID on successful face match. The server uses OpenCV's LBPH recognizer; you must pre‑populate `known_faces_db` with grayscale training images keyed by registration ID.
+- `POST /api/scan` – accepts camera capture (base64). It first attempts to decode a barcode; if one is found it treats the decoded text as a registration ID lookup. If no barcode is present it falls back to the face recognizer.
+
+Example JSON body for either endpoint:
+
+```json
+{ "image": "<base64 string>" }
+```
+
+### Enrolling faces
+
+You can add members manually in `app.py` or via an admin route (not provided). For example:
+
+```python
+from app import known_faces_db
+import cv2
+img = cv2.imread('user123.jpg')
+gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+known_faces_db['user123'] = gray
+```
+
+The recognizer is trained on this dictionary every time a request is made; for a production system you would persist a model and only retrain when new faces are added.
+
+
+
 ### Docker
 
 A `Dockerfile` is included for containerizing the application. To build and run:
