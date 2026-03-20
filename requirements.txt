@@ -2,4 +2,4 @@ flask
 numpy
 pillow
 pyzbar
-opencv-contrib-python
+opencv-contrib-python-headless

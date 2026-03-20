@@ -4,15 +4,18 @@ FROM python:3.13-slim
 # set a work directory
 WORKDIR /app
 
+# Install system dependencies
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+       libzbar0 \
+    && rm -rf /var/lib/apt/lists/*
+
 # copy requirements and install
 COPY requirements.txt .
-RUN apt-get update \
-    && apt-get install -y --no-install-recommends build-essential cmake libopenblas-dev liblapack-dev libx11-6 libglib2.0-0 \
-       libsm6 libxrender1 libfontconfig1 zlib1g-dev \
-    && pip install --no-cache-dir -r requirements.txt \
-    && apt-get remove -y build-essential cmake \
-    && apt-get autoremove -y \
-    && rm -rf /var/lib/apt/lists/*
+RUN pip install --no-cache-dir -r requirements.txt
+
+# copy application code
+COPY . .
 
 # copy application code
 COPY . .
