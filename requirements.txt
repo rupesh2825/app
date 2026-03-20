@@ -3,3 +3,4 @@ numpy
 pillow
 pyzbar
 opencv-contrib-python-headless
+gunicorn
